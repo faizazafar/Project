@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "511019454156",
+    "project_id": "gaddi-38acd",
+    "storage_bucket": "gaddi-38acd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511019454156:android:46aa8619785a889631fc69",
+        "android_client_info": {
+          "package_name": "com.SecureGaddi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "511019454156-9pi83v0jt2mach4peh6knc1qe4bqhhpb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQAZRPSg7VvXLr1vGNR02HZFxGkjepK-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511019454156-9pi83v0jt2mach4peh6knc1qe4bqhhpb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

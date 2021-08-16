@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Zone Drawer</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <meta charset="utf-8"/>
+    </head>
+
+    <body>
+        <!--Tools-->
+        <div id="button-container">
+                <button id="draw-points-tool" class="canvas-button"><img class="icon" src="images/pencil-icon.png"/></button>
+                <button id="move-points-tool" class="canvas-button"><img class="icon" src="images/move-icon.png"/></button>
+                <button id="delete-points-tool" class="canvas-button"><img class="icon" src="images/delete-icon.png"/></button>
+                <button id="coord-tool" class="canvas-button"><img class="icon" src="images/coordinate-icon.png"/></button>
+                <button onclick="fileSelectClick()" class="canvas-button"><img class="icon" src="images/file-icon.png"/><input style="display:none;" id="file_selected" type="file"/></button>
+                <button id="urlSelect" onclick="showPopup('url-insert-overlay')" class="canvas-button"><img class="icon" src="images/url-icon.png"/></button>
+        </div>
+        <!--Draw Board-->
+        <div id="drawing-board">
+            <!--Loads User Image/Video-->
+            <div id="media-container"></div>
+            <!--Drawing Canvas-->
+            <div id="canvas-container">
+                    <canvas width="0" height="0" id="canvas"></canvas>
+            </div>
+        </div>
+
+        <!--Drag&Drop Overlay-->
+        <div id="drop_zone"></div>
+
+        <!--URL Insert Overlay-->
+        <div id="url-insert-overlay">
+            <input id="url-input-field" type="url" placeholder="http://www.example.com/image.jpg"></input>
+            <button id="acceptUrl" class="url-button" onclick="setUrlMedia()">Accept</button>
+            <button id="cancelUrl" class="url-button" onclick="hidePopup('url-insert-overlay')">Exit</button>
+            <div onclick="hidePopup('url-insert-overlay')" style="text-align:center"></div>
+        </div>
+
+        <!--Shape Coordinates Overlay-->
+        <div id="shape-coordinates-overlay">
+            <p id="shape-coordinates-result" placeholder="http://www.example.com/image.jpg">Testing</p>
+            <button id="acceptUrl" class="url-button" onclick="hidePopup('shape-coordinates-overlay')">Accept</button>
+            <div onclick="hidePopup('shape-coordinates-overlay')" style="text-align:center"></div>
+        </div>
+
+
+        <script>
+            var newMedia = false;
+var media = document.getElementById("media-container");
+var URL = window.URL || window.webkitURL; //object to construct URLs
+var originalMediaWidth; //store file width
+var originalMediaHeight; //store file height
+var mediaIsShrunk = false; //is media resized smaller
+
+////////////////////////////
+//File Select
+////////////////////////////
+//Check Browser Drag&Drop Support
+if (window.File && window.FileReader && window.FileList && window.Blob) {
+  //Setup the drag&drop listeners.
+  var DragDropZone = document.getElementById("drop_zone");
+  var fileInputZone = document.getElementById("file_selected");
+  //File Entered Screen
+
+  document.body.addEventListener("dragover", handleDragOver, false); //show Drag&Drop Zone
+  //File Inputed or Dropped
+  fileInputZone.addEventListener("change", handleInputedFile, false); //Handle file from input button
+  DragDropZone.addEventListener("drop", handleDroppedFile, false); //Handle file & hide Drag&Drop Zone
+  //File Left Screen
+  DragDropZone.addEventListener(
+    "dragleave",
+    function() {
+      DragDropZone.style.display = "none";
+    },
+    false
+  ); //hide Drag&Drop Zone
+}
+//alert that there is no support
+else {
+  alert("The File APIs are not fully supported in this browser.");
+}
+
+window.addEventListener("resize", function() {
+  if ((originalMediaHeight && originalMediaHeight) !== undefined) {
+    var userMedia = document.getElementById("user-media"); //html file element
+    resize(userMedia.clientWidth, userMedia.clientHeight);
+  }
+});
+
+////////////////////////////
+// Functions
+////////////////////////////
+// - read and save user selected file
+function processFile(file) {
+  newMedia = true; //new media was imported
+  var mediaUrl = URL.createObjectURL(file); //user's file url link
+  //If Image File\\
+  console.log(file.type);
+  if (file.type.match("image.*")) {
+    var image = new Image(); //canvas image object
+    image.src = mediaUrl; //point to user file
+    media.innerHTML = '<img id="user-media" src="' + mediaUrl + '">'; //replace exsisting media
+    canvasMediaUrl = image; //assign as canvas background
+    //on image loaded
+    image.onload = function() {
+      originalMediaWidth = image.naturalWidth; //update original width
+      originalMediaHeight = image.naturalHeight; //update original height
+      resize();
+    };
+  }
+  //If Video File\\
+  else if (
+    file.type === "video/mp4" ||
+    file.type === "video/webm" ||
+    file.type === "video/ogg"
+  ) {
+    media.innerHTML =
+      '<video id="user-media" muted autoplay loop src="' + mediaUrl + '">'; //replace exsisting media
+    var video = document.getElementById("user-media");
+    // Wait for metadata to load
+    video.addEventListener(
+      "loadedmetadata",
+      function() {
+        originalMediaWidth = video.videoWidth; //update original width
+        originalMediaHeight = video.videoHeight; //update original height
+        resize();
+      },
+      false
+    );
+  }
+  //Unsupported file format
+  else {
+    alert(
+      "Invalid File Type:\n" + "Please upload an image or mp4/webm/ogg file."
+    );
+  }
+}
+
+// - resize file width & height
+function resize() {
+  var userMedia = document.getElementById("user-media"); //html file element
+  //file is larger than 75% of website screen
+  if (
+    originalMediaWidth >= window.innerWidth * 0.75 ||
+    originalMediaHeight >= window.innerHeight * 0.75
+  ) {
+    //resize media width 75% of screen size
+    userMedia.setAttribute("style", "width:" + window.innerWidth * 0.75 + "px");
+    mediaIsShrunk = true;
+  }
+  //file is smaller than website screen
+  else {
+    //resize media
+    userMedia.setAttribute("style", "width:" + originalMediaWidth + "px");
+    mediaIsShrunk = false;
+  }
+  //resize canvas
+  canvas.width = userMedia.clientWidth;
+  canvas.height = userMedia.clientHeight;
+}
+
+// - handle file chosen from button
+function handleInputedFile(evt) {
+  evt.stopPropagation(); //stop reading event
+  evt.preventDefault(); //prevent new tab on drop
+  processFile(evt.target.files[0]);
+}
+
+// - handle file chosen from drag&drop
+function handleDroppedFile(evt) {
+  document.getElementById("drop_zone").style.display = "none"; //remove drop overlay
+  evt.stopPropagation(); //stop reading event
+  evt.preventDefault(); //prevent new tab on drop
+  processFile(evt.dataTransfer.files[0]);
+}
+
+// - file enters screen
+function handleDragOver(event) {
+  //check if object came from user
+  if (event.dataTransfer.types) {
+    //check if object is file
+    for (var i = 0; i < event.dataTransfer.types.length; i++) {
+      if (event.dataTransfer.types[i] == "Files") {
+        document.getElementById("drop_zone").style.display = "block"; //show drop&zone div
+        event.stopPropagation(); //stop reading drop event
+        event.preventDefault(); //prevent leaving page on file drop
+        event.dataTransfer.dropEffect = "copy"; //visual feedback
+      }
+    }
+  }
+}
+
+// - click file select button
+fileSelectClick = function() {
+  document.getElementById("file_selected").click();
+};
+
+// - show url input field
+function showPopup(id) {
+  var popup = document.getElementById(id);
+  popup.style.display = "block";
+  popup.style.height = "100%";
+  console.log(id);
+}
+// - hide url input field
+function hidePopup(id) {
+  var popup = document.getElementById(id);
+  popup.style.display = "none";
+  popup.style.height = "0%";
+}
+
+// - read user inputed url
+function setUrlMedia() {
+  newMedia = true; //new media was imported
+  var url = document.getElementById("url-input-field").value; //input field value
+  var fileType = url
+    .split(/\#|\?/)[0]
+    .split(".")
+    .pop()
+    .trim()
+    .toLowerCase(); //.jpg,.mp4,etc...
+  console.log("Uploaded: " + fileType); //log file type
+  //if html supported video
+  if (fileType === "mp4" || fileType === "webm" || fileType === "ogg") {
+    media.innerHTML =
+      '<video id="user-media" muted autoplay loop src="' + url + '">'; //add video to html
+    fileType = "video"; //declare file as a video
+  }
+  //else assume it's an image file
+  else {
+    media.innerHTML = '<img id="user-media" src="' + url + '">'; //add image to html
+    fileType = "image"; //declare file as a image
+  }
+  var userMedia = document.getElementById("user-media"); //get media element
+  userMedia.addEventListener("loadedmetadata", function() {
+    urlLoaded("video");
+  }); //add video loaded event listener
+  userMedia.addEventListener("load", function() {
+    urlLoaded("image");
+  }); //add image loaded event listener
+}
+
+// - close url insert overlay
+function urlLoaded(mediaType) {
+  var userMedia = document.getElementById("user-media");
+  //if video
+  if (mediaType === "video") {
+    originalMediaWidth = userMedia.videoWidth; //update original width
+    originalMediaHeight = userMedia.videoHeight; //update original height
+  }
+  //if image
+  else if (mediaType === "image") {
+    originalMediaWidth = userMedia.naturalWidth; //update original width
+    originalMediaHeight = userMedia.naturalHeight; //update original height
+  }
+  //if unknown
+  else {
+    alert("error determining file type");
+  }
+  resize(); //resize media to fit screen size
+  hidePopup("url-insert-overlay"); //hide url input field
+  console.log("url loaded");
+  userMedia.removeEventListener("load", urlLoaded);
+  userMedia.removeEventListener("loadedmetadata", urlLoaded);
+}
+
+        </script>
+        <script>
+            ////////////////////////////
+//Global Vars
+///////////////////////////
+
+var canvas = document.getElementById("canvas"); //canvas//decleared in media.js
+var ctx = canvas.getContext("2d"); //drawing object
+//mouse coordinates
+var mouse = {
+  x: 0, //x coord
+  y: 0, //y coord
+  radius: 6, //mouse detection radius
+  inCanvas: false, //hovering over canvas
+  clickedCanvas: false, //clicked on canvas
+};
+//active canvas tool
+var activeTool = "none";
+//user Custom Shape
+userShape = {
+  points: [], //points that connect shape
+  finished: false, //boolean of shape completion
+  color: "#f00", //shape line color
+};
+
+////////////////////////////
+//Canvas
+///////////////////////////
+//Animate Canvas
+function animate() {
+  //remove previous polygon
+  if (newMedia) {
+    userShape.points = []; //reset user points
+    userShape.finished = false;
+    newMedia = false;
+  }
+  //background
+  ctx.clearRect(0, 0, canvas.width, canvas.height); //clear background
+
+  strokeShape(userShape); //draw user's shape
+
+  activeToolLogic(); //script for active tool
+
+  //animationloop
+  requestAnimationFrame(animate);
+}
+animate();
+
+////////////////////////////
+//Event Listeners
+///////////////////////////
+//move tool button click event
+createActiveTool("move-points-tool", "pointer");
+//draw tool button click event
+createActiveTool("draw-points-tool", "crosshair");
+//delete tool button click event
+createActiveTool("delete-points-tool", "not-allowed");
+
+//On Cavnas Mouse Move
+canvas.addEventListener("mousemove", function(event) {
+  var rect = canvas.getBoundingClientRect(); //canvas dimensions
+  mouse.x = event.clientX - rect.left; //update mouseX
+  mouse.y = event.clientY - rect.top; //update mouseY
+});
+//On mouse in canvas
+canvas.onmouseover = function(e) {
+  mouse.inCanvas = true;
+};
+//On mouse leave canvas
+canvas.onmouseout = function(e) {
+  mouse.inCanvas = false;
+};
+//On mouse click in canvas
+canvas.addEventListener("click", function() {
+  mouse.clickedCanvas = true; //simulate canvas click event
+});
+
+//coordinate tool button
+document.getElementById("coord-tool").addEventListener("click", function() {
+  var result = "" + userShape.points.length + "<br>"; //outputed to user
+  //loop through each point
+  for (i = 0; i < userShape.points.length; i++) {
+    //save each point
+    result +=
+      Math.trunc(userShape.points[i].x) +
+      " " +
+      Math.trunc(userShape.points[i].y) +
+      "<br>";
+  }
+  //Insert result to html overlay
+  console.log(result);
+  document.getElementById("shape-coordinates-result").innerHTML = result; //add result to overlay
+  showPopup("shape-coordinates-overlay"); //show overlay
+});
+
+// - Keyboard Shortcuts
+document.addEventListener("keydown", function(event) {
+  //ctrl-z or meta-z
+  if (
+    (event.ctrlKey && event.code === "KeyZ") ||
+    (event.metaKey &&
+      event.code === "KeyZ" &&
+      activeTool === "draw-points-tool")
+  ) {
+    //cancel finished shape
+    if (userShape.finished) userShape.finished = false;
+    //remove last point
+    else {
+      userShape.points.pop();
+      console.log(userShape);
+    }
+  }
+});
+
+////////////////////////////
+//Functions
+///////////////////////////
+// - Runs function for tool in use
+function activeToolLogic() {
+  if (activeTool === "none") {
+    mouse.clickedCanvas = false; //set mouse as unclicked
+    return; //exit
+  } else if (activeTool === "draw-points-tool") {
+    drawToolLogic(mouse.clickedCanvas);
+  } else if (activeTool === "move-points-tool") {
+    moveToolLogic(mouse.clickedCanvas);
+  } else if (activeTool === "delete-points-tool") {
+    deleteToolLogic(mouse.clickedCanvas);
+  }
+  mouse.clickedCanvas = false; //set mouse as unclicked
+}
+
+// - Adds button click event & cursor change & sets active tool
+function createActiveTool(id, cursor) {
+  var buttonElement = document.getElementById(id); //html button element
+  //on button click
+  buttonElement.addEventListener("click", function() {
+    //Unselect last tool
+    if (activeTool !== "none") {
+      document.getElementById(activeTool).style.backgroundColor =
+        "rgba(0, 0, 0, 0.49)"; //revert active tool background
+      canvas.style.cursor = "default"; //revert to old cursor
+    }
+    //Select tool if new
+    if (activeTool !== id) {
+      activeTool = id; //change active tool
+      canvas.style.cursor = cursor; //change to tool cursor
+      buttonElement.style.backgroundColor = "white"; //set active background
+    }
+    //Confirm to unselect last tool
+    else {
+      activeTool = "none"; //update active tool
+    }
+  });
+}
+
+// - Logic for drawing tool
+function drawToolLogic(canvasClicked) {
+  if (!userShape.finished) {
+    //on canvas clicked
+    if (canvasClicked) {
+      //finish shape if clicked on first point
+      if (userShape.points.length > 1 && mouseOnPoint(userShape.points[0]))
+        userShape.finished = true;
+      //user wants to add a point
+      else {
+        //adjust if media resize
+        if (mediaIsShrunk) {
+          userShape.points.push({
+            x: mouse.x * (originalMediaWidth / canvas.width),
+            y: mouse.y * (originalMediaHeight / canvas.height),
+          });
+        }
+        //add point normally
+        else userShape.points.push({ x: mouse.x, y: mouse.y }); //add new shape point
+      }
+      console.log(userShape.points); //log new shape array
+    }
+
+    //if over first shape point and ready to close shape
+    if (userShape.points.length > 1 && mouseOnPoint(userShape.points[0])) {
+      console.log("over finisher point");
+      drawCircle(
+        userShape.points[0].x * (canvas.width / originalMediaWidth),
+        userShape.points[0].y * (canvas.height / originalMediaHeight),
+        7,
+        2,
+        "#00ff00",
+        "fill"
+      );
+      drawCircle(
+        userShape.points[0].x * (canvas.width / originalMediaWidth),
+        userShape.points[0].y * (canvas.height / originalMediaHeight),
+        8,
+        2,
+        "#fff",
+        "stroke"
+      );
+    }
+
+    //preview next shape line
+    if (userShape.points.length > 0 && mouse.inCanvas) {
+      previewStroke(userShape.points[userShape.points.length - 1]); //preview from last point in shape array
+    }
+  }
+}
+
+// - Logic for delete tool
+function deleteToolLogic(canvasClicked) {
+  //preview movable points & which point mouse is over
+  highlightPoints(userShape.points, "yellow", function(focusedPoint) {
+    //if user wants to edit point being focused
+    if (focusedPoint !== undefined && canvasClicked) {
+      userShape.points.splice(focusedPoint, 1); //delete selected point
+      //if shape is not fully connected
+      if (userShape.finished && userShape.points.length < 3)
+        userShape.finished = false; //set shape as unfinished
+    }
+  });
+}
+
+// - Logic for move tool
+var editingPoint; //point user is moving
+function moveToolLogic(canvasClicked) {
+  //preview movable points & which point mouse is over
+  highlightPoints(userShape.points, "#0000ff", function(focusedPoint) {
+    //if user clicks while editing point or leaves canvas
+    if ((editingPoint !== undefined && canvasClicked) || !mouse.inCanvas) {
+      editingPoint = undefined; //stop editing point
+    }
+    //if user wants to edit point being focused
+    else if (focusedPoint !== undefined && canvasClicked) {
+      editingPoint = focusedPoint; //update point to edit
+    }
+  });
+
+  //if editing point is set
+  if (editingPoint !== undefined) {
+    userShape.points[editingPoint].x =
+      mouse.x * (originalMediaWidth / canvas.width); //set point x to mouse.x
+    userShape.points[editingPoint].y =
+      mouse.y * (originalMediaHeight / canvas.height); //set point y to mouse.y
+  }
+}
+
+// - Draws temporary line from last point
+function previewStroke(point) {
+  ctx.beginPath(); //start
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = userShape.color;
+  ctx.moveTo(
+    point.x * (canvas.width / originalMediaWidth),
+    point.y * (canvas.height / originalMediaHeight)
+  ); //last point
+  ctx.lineTo(mouse.x, mouse.y); //mouse pos
+  ctx.stroke(); //draw
+}
+
+// - Draws a shape from an array of coordinate objetcs
+function strokeShape(shape) {
+  //more than 2+ points
+  if (shape.points.length > 1) {
+    ctx.beginPath(); //start
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = userShape.color;
+    ctx.lineJoin = "round";
+    //draw first point
+    ctx.moveTo(
+      shape.points[0].x * (canvas.width / originalMediaWidth),
+      shape.points[0].y * (canvas.height / originalMediaHeight)
+    );
+    //draw lines to other points
+    for (var i = 1; i < shape.points.length; i++) {
+      ctx.lineTo(
+        shape.points[i].x * (canvas.width / originalMediaWidth),
+        shape.points[i].y * (canvas.height / originalMediaHeight)
+      );
+    }
+    //if shape finished
+    if (shape.finished) {
+      ctx.closePath(); //connect last points
+      ctx.stroke(); //draw
+    }
+    //shape not finished
+    else ctx.stroke(); //finish drawing
+  }
+}
+
+//Check if over point
+function mouseOnPoint(point) {
+  //check if mouse is over point
+  if (
+    Math.pow(mouse.x - point.x * (canvas.width / originalMediaWidth), 2) +
+      Math.pow(mouse.y - point.y * (canvas.height / originalMediaHeight), 2) <
+    Math.pow(mouse.radius, 2)
+  ) {
+    return true;
+  }
+}
+
+function highlightPoints(points, color, callback) {
+  var pointIndex; //point sent to callback
+  //check every point
+  for (var i = 0; i < points.length; i++) {
+    //draw blue circle over point
+    drawCircle(
+      userShape.points[i].x * (canvas.width / originalMediaWidth),
+      userShape.points[i].y * (canvas.height / originalMediaHeight),
+      mouse.radius,
+      2,
+      color,
+      "fill"
+    );
+    //check if mouse is over a point
+    if (mouseOnPoint(points[i])) {
+      drawCircle(
+        userShape.points[i].x * (canvas.width / originalMediaWidth),
+        userShape.points[i].y * (canvas.height / originalMediaHeight),
+        mouse.radius + 1,
+        2,
+        "#0000ff",
+        "stroke"
+      ); //draw outline
+      pointIndex = i; //return array index
+    }
+  }
+  callback(pointIndex); //pass data to callback
+}
+
+// - Draw Circle Outline
+function drawCircle(x, y, radius, lineWidth, color, drawType) {
+  ctx.beginPath();
+  ctx.lineWidth = lineWidth;
+  ctx.style = color;
+  ctx.fillStyle = color;
+  ctx.arc(x, y, radius, 0, 2 * Math.PI); //(x, y, radius, startAngle, endAngle
+  if (drawType === "stroke") ctx.stroke();
+  else if (drawType === "fill") ctx.fill();
+}
+
+        </script>
+    </body>
+
+</html>
