@@ -17,7 +17,7 @@ import payment from "./payment"
 import profile from "./profile"
 import register from "./register"
 import showregion from "./showregion"
-
+import alert from './Alert'
 export {
 
    Home,
@@ -37,5 +37,6 @@ export {
    payment,
    profile,
    register,
-   showregion
+   showregion,
+   alert
 }

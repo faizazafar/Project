@@ -9,7 +9,7 @@ import Tabbar from './components/Tabbar';
 import Drawer from './components/Drawer';
 
 //Screens
-import {Home,Dashboard,carlocked,camera,congrats,contact,cropregion,livefeed,lock,login,Mapdash,membership,objdet,opt,payment,profile,register,showregion} from './containers';
+import {Home,Dashboard,carlocked,camera,congrats,contact,cropregion,alert,livefeed,lock,login,Mapdash,membership,objdet,opt,payment,profile,register,showregion} from './containers';
 
 // const AddChildStack = createStackNavigator({
 //   Language: {screen: Language},
@@ -106,16 +106,20 @@ const Authstack = createStackNavigator(
 
 const AppStack = createBottomTabNavigator(
   {
-  carlocked:{screen:carlocked},
+  lock:{screen:lock},
     // CustomerApprove:{screen:CustomerApprove},
     // Map:{screen:Mapdash},
-    Drawer:{screen: Drawer},
+    // Drawer:{screen: Drawer},
     livefeed:{screen: livefeed},
+    Dashboard:{screen:Dashboard},
+        Map:{screen:Mapdash},
+
+    alert:{screen: alert},
 
   },
 
   {
-    initialRouteName: 'carlocked',
+    initialRouteName: 'alert',
     tabBarComponent:(props)=><Tabbar  {...props}/>,
     headerMode: 'none',
   },

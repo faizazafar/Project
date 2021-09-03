@@ -8,8 +8,8 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-
 export default function App() {
+  
   return (
     <Nav />
   

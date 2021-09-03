@@ -1,72 +1,150 @@
-import React, { Component } from "react";
-import { Text, View, StyleSheet, Image, SVGImage } from "react-native";
-import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
-import MapView from "react-native-maps";
-import { Dimensions } from "react-native";
-import GetLocation from "react-native-get-location";
+// import React, { Component } from 'react'
+// import { Text, View, StyleSheet} from 'react-native'
+// import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 
-export default class Mapdash extends Component {
-  constructor(props) {
-    super(props);
+// export default class index extends Component {
+//   state={
+//     region: {
+//       latitude: 37.78825,
+//       longitude: -122.4324,
+//       latitudeDelta: 0.0922,
+//       longitudeDelta: 0.0421,
+//     },
+//   }
+  
+// onRegionChange(region) {
+//   this.setState({ region });
+
+// }
+//   render() {
+//     const {region}= this.state;
+//     console.log(region)
+//     return (
+//       <View style={styles.container}>
+//       <MapView
+//         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+//         style={styles.map}
+//         region={this.state.region}
+//         onRegionChange={this.onRegionChange}
+
+//       >
+//       </MapView>
+//     </View>
+
+//     )
+//   }
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     ...StyleSheet.absoluteFillObject,
+//     height:  '100%',
+//     width: 400,
+//     justifyContent: 'flex-end',
+//     alignItems: 'center',
+//   },
+//   map: {
+//     ...StyleSheet.absoluteFillObject,
+//   },
+//  });
+ 
+import React, { Component } from 'react';
+
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
+
+import MapView from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
+
+const {width, height} = Dimensions.get('window')
+
+const SCREEN_HEIGHT = height
+const SCREEN_WIDTH = width
+const ASPECT_RATIO = width / height
+const LATITUDE_DELTA = 0.0922
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
+
+class MapComponent extends Component {
+  constructor() {
+    super()
     this.state = {
-      region: null,
-    };
-
-    this._getLocationAsync();
+      initialPosition: {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0,
+      },
+    }
   }
 
-  _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== "granted") console.log("PERMISSION DENIED");
+  
+  componentDidMount() {
+    Geolocation.getCurrentPosition((position) => {
+      var lat = parseFloat(position.coords.latitude)
+      var long = parseFloat(position.coords.longitude)
 
-    let location = await Location.getCurrentPositionAsync({
-      enabledHighAccuracy: true,
-    });
+      var initialRegion = {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      }
 
-    let region = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-      latitudeDelta: 0.045,
-      longitudeDelta: 0.045,
-    };
+      this.setState({initialPosition: initialRegion})
+    },
+    (error) => alert(JSON.stringify(error)),
+    {enableHighAccuracy: true, timeout: 20000,  });
+  }
 
-    this.setState({ region: region });
-    // alert(location.coords.latitude)
-    // alert(location.coords.longitude)
-  };
+
+  renderScreen = () => {
+      return (
+        <View style={styles.container}>
+          <MapView
+            style={styles.map}
+            initialRegion={this.state.initialPosition}
+            followsUserLocation={true}
+            showsUserLocation={true}
+
+            >
+               <MapView.Marker
+            coordinate={{latitude:this.state.initialPosition.latitude,longitude:this.state.initialPosition.longitude}}
+            title={"title"}
+            description={"description"}
+         />
+      </MapView>
+
+        </View>
+      );
+  }
 
   render() {
     return (
-      <View>
-        <MapView
-          initialRegion={this.state.region}
-          showsUserLocation={true}
-          showsCompass={true}
-          rotateEnabled={false}
-          style={styles.map}
-          showsMyLocationButton={true}
-        >
-          {/* <SVGImage>
-            href=
-            {
-              "https://lh3.googleusercontent.com/proxy/mSKq0zV3DKtNoUJBK94SJLBIGL--7jpLsKasJf_qavyL7-DjWaRue3NKKWR8Q9_YpkNViBQtZAnkmHcoOjtH7z4ru09DNNHnMlEqyw"
-            }
-            width={40}
-            height={30}
-          </SVGImage> */}
-          {/* <Camera /> */}
-        </MapView>
-      </View>
+      this.renderScreen()
     );
   }
 }
+
 const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-    // width:100,
-    // height: 380,
-    // marginBottom:200
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
+
+export default MapComponent;

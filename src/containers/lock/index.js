@@ -7,28 +7,25 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 export default class lock extends React.Component {
   handleClick = () => {
-    this.props.navigation.navigate("cropregionscreen");
+    this.props.navigation.navigate("cropregion");
   };
   render() {
     return (
-      <View style={{ justifyContent: "center",alignItems:'center',
-      flex: 1,
-      // backgroundColor: '#F6F7F9',
-      paddingTop: 20 + getStatusBarHeight(),
-      padding:20
-      }}>
+      <View style={{ justifyContent: "center", marginTop: 100 }}>
         <View
           style={{
             alignItems: "center",
             justifyContent: "center",
-
+            alignContent: "center",
+            marginLeft: 35,
+            marginRight: 35,
+            marginTop: 100,
+            marginBottom: 20,
           }}
         >
-          <Image style={{height:200,width:200}} source={{uri:'https://i.gifer.com/MeG.gif'}} />
           <Text style={styles.para}>Do you want to lock your car ? </Text>
         </View>
 
@@ -45,25 +42,21 @@ export default class lock extends React.Component {
 }
 const styles = StyleSheet.create({
   submit: {
-    marginTop:10,
+    marginRight: 60,
+    marginLeft: 60,
     backgroundColor: "#272F58",
     borderRadius: 30,
     borderWidth: 1,
     borderColor: "#fff",
-    // alignContent: "center",
+    alignContent: "center",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal:70,
-    paddingVertical:10
   },
   getstart: {
     color: "#fff",
     fontSize: 20,
-    alignItems:'center',
-    justifyContent:'center'
   },
   para: {
     fontSize: 20,
-    marginTop:10
   },
 });

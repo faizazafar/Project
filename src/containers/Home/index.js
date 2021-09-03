@@ -16,7 +16,11 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 export default class Home extends React.Component {
   handleClick = () => {
     this.props.navigation.navigate("Login");
-  };
+  }
+  componentDidMount()
+  {
+  console.log(new Date() )
+  }
   render() {
     return (
       <View 
