@@ -18,6 +18,7 @@ import profile from "./profile"
 import register from "./register"
 import showregion from "./showregion"
 import alert from './Alert'
+import Splash from "./Splash"
 export {
 
    Home,
@@ -38,5 +39,6 @@ export {
    profile,
    register,
    showregion,
-   alert
+   alert,
+   Splash
 }

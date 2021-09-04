@@ -9,7 +9,7 @@ import Tabbar from './components/Tabbar';
 import Drawer from './components/Drawer';
 
 //Screens
-import {Home,Dashboard,carlocked,camera,congrats,contact,cropregion,alert,livefeed,lock,login,Mapdash,membership,objdet,opt,payment,profile,register,showregion} from './containers';
+import {Home,Dashboard,carlocked,Splash,camera,congrats,contact,cropregion,alert,livefeed,lock,login,Mapdash,membership,objdet,opt,payment,profile,register,showregion} from './containers';
 
 // const AddChildStack = createStackNavigator({
 //   Language: {screen: Language},
@@ -25,6 +25,7 @@ import {Home,Dashboard,carlocked,camera,congrats,contact,cropregion,alert,livefe
 
 const Authstack = createStackNavigator(
   {
+    Splash:{screen:Splash},
     Home: {screen:Home},
     Login: {screen: login},
     Register:{screen:register},
@@ -37,8 +38,11 @@ const Authstack = createStackNavigator(
   },
 
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Splash',
     headerMode: 'none',
+    defaultNavigationOptions: {
+      cardStyle: { backgroundColor: '#FFFFFF' },
+    },
   },
 );
 // const SignUpExtra = createStackNavigator(

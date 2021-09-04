@@ -29,9 +29,11 @@ class Tabbar extends React.Component {
                 // this.props.navigation.dispatch(StackActions.popToTop());
             };
             let imageSrc = require('../assets/Images/bell.png');
-        if(route.key === "TableView") imageSrc = require('../assets/Images/chair.png');
-        if(route.key === "Kitchen") imageSrc = require('../assets/Images/kitchen.png');
-        if(route.key === "Chef") imageSrc = require('../assets/Images/chef.png');
+        if(route.key === "lock") imageSrc = require('../../Image/lock.png');
+        if(route.key === "livefeed") imageSrc = require('../../Image/live.png');
+        if(route.key === "Map") imageSrc = require('../../Image/map.png');
+        if(route.key === "alert") imageSrc = require('../../Image/alert.jpg');
+
         if(index === 2)
          return <View
          style={styles.tab}>

@@ -152,14 +152,14 @@ export default class alert extends Component {
       <ScrollView
       
         showsVerticalScrollIndicator={false}
-        style={{ marginTop: 10, flex: 1 }}
+        style={{ marginTop: 10, flex: 1,backgroundColor:'white' }}
         contentContainerStyle={{ paddingVertical: 20 }}
       >
         <Text style={{ alignItems: 'center', justifyContent: 'center', fontSize: 30, fontWeight: 'bold', marginBottom: 10, marginLeft: 10, textDecorationLine: 'underline' }}>ALERTS</Text>
         <View style={{ marginLeft: 10, justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 30 }}>
 
         </View>
-        <View style={{ margin: 10,paddingVertical: 20 }}>
+        <View style={{ margin: 10,paddingVertical: 20, }}>
             {this.state.array.map((value, index) => {
               return (
                 <Alertlist value={value} />

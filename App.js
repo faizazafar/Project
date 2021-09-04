@@ -1,15 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import Nav from './src';
 console.disableYellowBox = true
-
+import SplashScreen from "react-native-splash-screen";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
 export default function App() {
-  
+  useEffect(()=>{
+SplashScreen.hide();
+    },[])
+
   return (
     <Nav />
   

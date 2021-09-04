@@ -8,21 +8,21 @@ const Alertlist = ({ value }) => {
     return (
         <View style={{paddingVertical: 20}}>
             <View >
-                <View >
-                    <View style={{ marginRight: 20, height: 20, width: 20, borderRadius: 10, justifyContent: 'space-between', backgroundColor: 'red', alignItems: 'center' }}>
+                <View style={{width:'80%',flexDirection:'row'}} >
+                    <View style={{ marginRight: 20, height: 30, width: 30, borderRadius: 10,borderwidth:1, justifyContent: 'space-between', backgroundColor: 'white', alignItems: 'center' }}>
                         <Image
-                            source={{uri:'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'}}
+                            source={require('../../../Image/bell.png')}
                             style={{
                                 resizeMode: 'contain',
-                                height: 18,
-                                width: 18,
+                                height: 28,
+                                width: 28,
                                 resizeMode:'contain'
                             }}
                         />
                     </View>
-                    <TouchableOpacity   onPress={() => setShow(!show)} style={{ backgroundColor: 'red', paddingHorizontal: 30, borderRadius: 20 }}>
-                        <Text>{value.movement_type}</Text>
-                        <Text>{value.remarks}</Text>
+                    <TouchableOpacity   onPress={() => setShow(!show)} style={{ backgroundColor: '#d4d9df', paddingHorizontal: 30,padding:10, borderRadius: 20 }}>
+                        <Text>Movement of: {value.movement_type}</Text>
+                        <Text>Description: {value.remarks}</Text>
                         {/* <Text style={{ zIndex: 99 }}>{element.video}</Text> */}
                     </TouchableOpacity> 
                 </View>
@@ -36,8 +36,9 @@ const Alertlist = ({ value }) => {
             {show && (
             <View  style={{
                 flex: 1,
-                backgroundColor: "red",
+                backgroundColor: "#d4d9df",
                 justifyContent: "center",
+                marginTop:10
                 // flexWrap: 'wrap'
             }}>
                 {/* {this.state.array.video.map((values, index) => {

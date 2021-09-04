@@ -14,7 +14,7 @@ export default class lock extends React.Component {
   };
   render() {
     return (
-      <View style={{ justifyContent: "center", marginTop: 100 }}>
+      <View style={{flex:1, justifyContent: "center", backgroundColor:'white'  }}>
         <View
           style={{
             alignItems: "center",
