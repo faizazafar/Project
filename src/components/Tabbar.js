@@ -29,10 +29,10 @@ class Tabbar extends React.Component {
                 // this.props.navigation.dispatch(StackActions.popToTop());
             };
             let imageSrc = require('../assets/Images/bell.png');
-        if(route.key === "lock") imageSrc = require('../../Image/lock.png');
-        if(route.key === "livefeed") imageSrc = require('../../Image/live.png');
+        if(route.key === "Profile") imageSrc = require('../../Image/pr.png');
+        if(route.key === "Livefeed") imageSrc = require('../../Image/live.png');
         if(route.key === "Map") imageSrc = require('../../Image/map.png');
-        if(route.key === "alert") imageSrc = require('../../Image/alert.jpg');
+        if(route.key === "Alert") imageSrc = require('../../Image/alert.jpg');
 
         if(index === 2)
          return <View

@@ -1,7 +1,9 @@
 import React, { Component,useState } from 'react'
 import { Text, View, Image, TouchableOpacity,Dimensions } from 'react-native'
-import Video from "react-native-video";
-
+// import Video from "react-native-video";
+import {Video} from "expo-av"
+import Constants from 'expo-constants';
+console.log(Constants.manifest)
 const Alertlist = ({ value }) => {
     const [show, setShow] = useState(false);
     console.log("ALERTLIST",value.video_file)
@@ -47,10 +49,7 @@ const Alertlist = ({ value }) => {
                 <View  >
 
                     <Video
-                        repeat={true}
-                        controls={true}
                         resizeMode='contain'
-                        fullscreen={true}
                         source={{
                             uri: value.video_file
                         }}
@@ -61,6 +60,9 @@ const Alertlist = ({ value }) => {
                             width: '100%',
                             height: 200,
                         }}
+                        shouldPlay
+                        isLooping
+                        useNativeControls
                     />
                 </View>
             </View>

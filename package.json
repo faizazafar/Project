@@ -19,6 +19,7 @@
     "@tensorflow-models/coco-ssd": "^2.2.1",
     "@tensorflow/tfjs-backend-cpu": "^3.4.0",
     "@tensorflow/tfjs-backend-webgl": "^3.4.0",
+    "expo-av": "^9.2.3",
     "expo-constants": "^11.0.1",
     "expo-linear-gradient": "^9.2.0",
     "expo-location": "^12.1.2",

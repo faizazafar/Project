@@ -72,7 +72,7 @@ export default class Drawer extends Component {
         style={{
           flex: 1,
           paddingTop: getStatusBarHeight(),
-          backgroundColor: '#071440',
+          backgroundColor: '#272F58',
           padding: 15,
           width: '100%',
           marginTop:20
@@ -92,7 +92,7 @@ export default class Drawer extends Component {
           />
           </TouchableOpacity>
         </ImageBackground>
-        <TouchableOpacity style={{marginTop:10}}>
+        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Login')}} style={{marginTop:10}}>
             <Text style={{color:'white'}}>
                 Logout
                 </Text>
@@ -123,7 +123,7 @@ export default class Drawer extends Component {
             </View>
           );
         })}
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -159,8 +159,8 @@ export default class Drawer extends Component {
             }}
             source={require('../assets/Images/search.png')}
           />
-        </View>
-        <View style={{marginTop: 10, flexDirection: 'row', marginLeft: 10,flexWrap:'wrap'}}>
+        </View> */}
+        {/* <View style={{marginTop: 10, flexDirection: 'row', marginLeft: 10,flexWrap:'wrap'}}>
         {frequent.map((button, index) => {
           return (<TouchableOpacity
             style={{
@@ -176,7 +176,7 @@ export default class Drawer extends Component {
             <Text style={{color: 'white', textAlign: 'center'}}>{button.numbers}</Text>
           </TouchableOpacity>)})}
           
-        </View>
+        </View> */}
         </ScrollView>
       </View>
     );

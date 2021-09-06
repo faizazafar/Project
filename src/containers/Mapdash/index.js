@@ -110,11 +110,11 @@ class MapComponent extends Component {
             showsUserLocation={true}
 
             >
-               {/* <MapView.Marker
+               <MapView.Marker
             coordinate={{latitude:this.state.initialPosition.latitude,longitude:this.state.initialPosition.longitude}}
             title={"title"}
             description={"description"}
-         /> */}
+         />
       </MapView>
 
         </View>

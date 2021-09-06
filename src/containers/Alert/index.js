@@ -92,6 +92,7 @@ export default class alert extends Component {
       .then(response => response.json())
       .then(result => {
         let val = result
+        console.log("RESULT OF ALERTS",result)
         this.setState({...this.state.array,array : result.data.reverse()})
         console.log('VAfsdfsdfsdfsdfsdL',this.state.array)
         let i = 0, j = 0, arr = [];

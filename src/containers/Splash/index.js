@@ -4,7 +4,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default class index extends Component {
     handleClick = () => {
-        this.props.navigation.navigate("Home");
+        this.props.navigation.navigate("Gender");
     }
     render() {
         return (

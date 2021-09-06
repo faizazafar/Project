@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Alert, TouchableOpacity } from "react-native";
 import React, { Component } from "react";
-import Video from "react-native-video";
-
+// import Video from "react-native-video";
+import {Video} from "expo-av"
 import { DragResizeBlock } from "react-native-drag-resize";
 import Service from "../../../libs/service";
 import dateFormat from "../../../libs/dateformat";
@@ -98,7 +98,7 @@ export default class livefeed extends Component {
     let params = {
       user_id: 1,
       camera_id: 1,
-      last_sync: '2021-08-28 03:15:00-03:20:00'
+      last_sync: '2021-09-06 03:15:00-03:20:00'
     };
 
     let s = new Service();
@@ -173,8 +173,8 @@ export default class livefeed extends Component {
           <Text style={styles.status}>{screenStatus}</Text>
           <Video
             key={videoIndex.toString()}
-            repeat={false}
-            controls={true}
+            // repeat={false}
+            // controls={true}
             onEnd={this.onVideoEnd.bind(this)}
             onError={this.onError.bind(this)}
             source={{
@@ -184,7 +184,7 @@ export default class livefeed extends Component {
               this.player = ref;
             }}
             style={styles.backgroundVideo}
-            resizeMode="cover"
+            resizeMode="contain"
           />
           <DragResizeBlock
             ref={ref => {

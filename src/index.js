@@ -9,7 +9,7 @@ import Tabbar from './components/Tabbar';
 import Drawer from './components/Drawer';
 
 //Screens
-import {Home,Dashboard,carlocked,Splash,camera,congrats,contact,cropregion,alert,livefeed,lock,login,Mapdash,membership,objdet,opt,payment,profile,register,showregion} from './containers';
+import {Home,Dashboard,Gender,carlocked,Splash,camera,congrats,contact,cropregion,alert,livefeed,lock,login,Mapdash,membership,objdet,opt,payment,profile,register,showregion} from './containers';
 
 // const AddChildStack = createStackNavigator({
 //   Language: {screen: Language},
@@ -26,6 +26,7 @@ import {Home,Dashboard,carlocked,Splash,camera,congrats,contact,cropregion,alert
 const Authstack = createStackNavigator(
   {
     Splash:{screen:Splash},
+    Gender :{screen:Gender},
     Home: {screen:Home},
     Login: {screen: login},
     Register:{screen:register},
@@ -110,20 +111,20 @@ const Authstack = createStackNavigator(
 
 const AppStack = createBottomTabNavigator(
   {
-  lock:{screen:lock},
+  Profile:{screen:profile},
     // CustomerApprove:{screen:CustomerApprove},
     // Map:{screen:Mapdash},
     // Drawer:{screen: Drawer},
-    livefeed:{screen: livefeed},
+    Livefeed:{screen: livefeed},
     Dashboard:{screen:Dashboard},
         Map:{screen:Mapdash},
 
-    alert:{screen: alert},
+    Alert:{screen: alert},
 
   },
 
   {
-    initialRouteName: 'alert',
+    initialRouteName: 'Alert',
     tabBarComponent:(props)=><Tabbar  {...props}/>,
     headerMode: 'none',
   },

@@ -19,6 +19,7 @@ import register from "./register"
 import showregion from "./showregion"
 import alert from './Alert'
 import Splash from "./Splash"
+import Gender from "./Gender";
 export {
 
    Home,
@@ -40,5 +41,6 @@ export {
    register,
    showregion,
    alert,
-   Splash
+   Splash,
+   Gender
 }
