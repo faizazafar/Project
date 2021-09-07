@@ -88,7 +88,8 @@ export default class alert extends Component {
     };
     //  date= '2020-08-30 07:01:00'
     // let date = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss");
-    let data = await fetch(`http://18.224.158.253/plac/public/api/get-alerts?user_id=1&camera_id=1&last_sync=${new Date()}&movement_type=car&is_suspected=1`, requestOptions)
+    // last_sync=${new Date()}
+    let data = await fetch(`http://18.224.158.253/plac/public/api/get-alerts?user_id=1&camera_id=1&last_sync=2021-09-06 12:00:00-02:56:00 &movement_type=car move&is_suspected=1`, requestOptions)
       .then(response => response.json())
       .then(result => {
         let val = result

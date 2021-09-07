@@ -63,6 +63,7 @@ const Alertlist = ({ value }) => {
                         shouldPlay
                         isLooping
                         useNativeControls
+                        isBuffering
                     />
                 </View>
             </View>
