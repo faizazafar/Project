@@ -450,6 +450,10 @@ export default class livefeed extends Component {
             controls={true}
             onEnd={this.onVideoEnd.bind(this)}
             onError={this.onError.bind(this)}
+            selectedVideoTrack={{
+              type: "resolution",
+              value: 640*480
+            }}
             source={{
               uri: encodeURI(videos)
               // uri:videos[videoIndex].video_file

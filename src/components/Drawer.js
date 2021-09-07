@@ -71,11 +71,11 @@ export default class Drawer extends Component {
       <View
         style={{
           flex: 1,
-          paddingTop: getStatusBarHeight(),
+          // paddingTop: getStatusBarHeight(),
           backgroundColor: '#272F58',
           padding: 15,
           width: '100%',
-          marginTop:20
+        
         }}>
           <ScrollView
           style={{flex: 1, marginTop: 10}}
