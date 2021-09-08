@@ -298,7 +298,7 @@ export default class livefeed extends Component {
     let pt_right_top = { x: regions.x + regions.w, y: regions.y };
     let pt_left_bottom = { x: regions.x, y: regions.y + regions.h };
     let pt_right_bottom = {
-      x: regions.x + regions.x,
+      x: regions.x + regions.w,
       y: regions.y + regions.h
     };
 
@@ -339,6 +339,7 @@ export default class livefeed extends Component {
       camera_id: 1,
       json: JSON.stringify(jsonObj)
     };
+    console.log("COORDINATES", jsonObj);
 
     let s = new Service();
     let response = await s.callPostWithParamsAndBody(
@@ -376,7 +377,7 @@ export default class livefeed extends Component {
       if (response.data.length > 0) {
         this.setState({
           videoIndex: 0,
-          videos: response.data.reverse()[0].video_file,
+          videos: response.data.reverse(),
           screenStatus: "Loading video..."
         });
       } else {
@@ -455,8 +456,8 @@ export default class livefeed extends Component {
               value: 640*480
             }}
             source={{
-              uri: encodeURI(videos)
-              // uri:videos[videoIndex].video_file
+              // uri: encodeURI(videos)
+              uri:videos[videoIndex].video_file
             }}
             ref={ref => {
               this.player = ref;
@@ -494,7 +495,7 @@ export default class livefeed extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#555",
+    backgroundColor: "white",
     justifyContent: "center"
   },
   backgroundVideo: {
@@ -507,7 +508,7 @@ const styles = StyleSheet.create({
   status: {
     textAlign: "center",
     fontSize: 20,
-    color: "#fff",
+    color: "black",
     width: "80%",
     alignSelf: "center"
   },

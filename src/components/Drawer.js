@@ -14,57 +14,41 @@ const {width} = Dimensions.get('screen');
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 const options = [
   {
-    picture: require('../assets/Images/table3.png'),
+    picture: require('../../Image/pr.png'),
     number: 101,
-    name: 'Order for any table',
+    name: 'Profile',
+   press: 'Profile'
   },
   {
-    picture: require('../assets/Images/cart.png'),
+    picture: require('../../Image/live.png'),
     number: 102,
-    name: 'Check live cart',
+    name: 'Checkout your livefeeds',
+    press: 'Livefeed'
+
   },
   {
-    picture: require('../assets/Images/basket.png'),
+    picture: require('../../Image/map.png'),
     number: 103,
-    name: 'Checkout',
+    name: 'Map',
+    press: 'Map'
+
   },
   {
-    picture: require('../assets/Images/shopper.png'),
+    picture: require('../../Image/alert.jpg'),
     number: 104,
-    name: 'Take payments',
+    name: 'Alerts',
+    press: 'Alert'
+
   },
   {
-    picture: require('../assets/Images/shift.png'),
+    picture: require('../../Image/logout.jpg'),
     number: 105,
-    name: 'Shift customer’s table',
-  },
-  {
-    picture: require('../assets/Images/graph1.png'),
-    number: 106,
-    name: 'Split tables ',
-  },
-  {
-    picture: require('../assets/Images/sent3.png'),
-    number: 107,
-    name: 'Modify orders',
-  },
-  {
-    picture: require('../assets/Images/boxes.png'),
-    number: 108,
-    name: 'Stock in/out items',
-  },
+    name: 'Logout',
+    press: 'Login'
+
+  }
 ];
-const frequent = [
-  {numbers: 101},
-  {numbers: 102},
-  {numbers: 101010},
-  {numbers: 101010},
-  {numbers: 103},
-  {numbers: 104},
-  {numbers: 105},
-  {numbers: 106},
-  {numbers: 101010},
-];
+
 export default class Drawer extends Component {
   render() {
     return (
@@ -84,7 +68,7 @@ export default class Drawer extends Component {
             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
         <ImageBackground
           style={{marginTop: 10, width: 100, height: 100,alignItems:'flex-end',justifyContent:'flex-end'}}
-          source={require('../assets/Images/profile.png')}>
+          source={require('../../Image/profile.png')}>
         <TouchableOpacity>
                 <Image
           style={{ width: 20, height: 20}}
@@ -92,7 +76,7 @@ export default class Drawer extends Component {
           />
           </TouchableOpacity>
         </ImageBackground>
-        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Login')}} style={{marginTop:10}}>
+        <TouchableOpacity onPress={()=>{}} style={{marginTop:10}}>
             <Text style={{color:'white'}}>
                 Logout
                 </Text>
@@ -106,16 +90,16 @@ export default class Drawer extends Component {
             fontSize: 32,
             color: '#FFFFFF',
           }}>
-          Akshay Kumar
+          Usman Ahmed
         </Text>
         {options.map((option, index) => {
           return (
-            <View style={{flexDirection: 'row', marginVertical: 10}}>
-              <Image style={{width: 20, height: 20,tintColor:'white'}} source={option.picture} />
+            <View style={{flexDirection: 'row', marginVertical: 15}}>
+              <Image style={{width: 20, height: 20,tintColor:'white',resizeMode:'contain'}} source={option.picture} />
               <Text style={{color: 'white', marginLeft: 10}}>
                 {option.number}
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity key={option.number} onPress={()=>this.props.navigation.navigate(option.press)}>
                 <Text style={{color: 'white', marginLeft: 10}}>
                   {option.name}
                 </Text>

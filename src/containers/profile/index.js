@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image, ScrollView,TouchableOpacity } from 'react-native'
+import { Text, View, Image, ScrollView,TouchableOpacity,Linking } from 'react-native'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import Video from 'react-native-video'
@@ -61,7 +61,7 @@ export default class index extends Component {
           </View>
           <View>
           <Text style={{ fontSize: 31, marginTop: 35, fontWeight: 'bold' }}>General</Text>
-          <TouchableOpacity style={{ flexDirection:'row',width: '100%', height: 50, marginTop: 10, borderBottomColor: 'grey', borderBottomWidth: 1}}>
+          <TouchableOpacity onPress={()=>{Linking.openURL('tel:8777111223');} } style={{ flexDirection:'row',width: '100%', height: 50, marginTop: 10, borderBottomColor: 'grey', borderBottomWidth: 1}}>
            
 {/* <Image style={{width:30,height:30,resizeMode:'contain',marginTop:10,tintColor:'#921621'}} source={require('../../../Image/contact.png')}/> */}
 <View style={{justifyContent:'space-between',alignItems:'center',flexDirection:'row'}}>
