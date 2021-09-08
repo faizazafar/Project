@@ -20,6 +20,7 @@ import showregion from "./showregion"
 import alert from './Alert'
 import Splash from "./Splash"
 import Gender from "./Gender";
+import timedata from "./livefeed"
 export {
 
    Home,
@@ -42,5 +43,6 @@ export {
    showregion,
    alert,
    Splash,
-   Gender
+   Gender,
+   timedata
 }

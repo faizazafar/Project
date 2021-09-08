@@ -29,9 +29,7 @@ const Authstack = createStackNavigator(
     Gender :{screen:Gender},
     Home: {screen:Home},
     Login: {screen: login},
-    Register:{screen:register},
-    Otp:{screen:opt},
-    Congrats:{screen:congrats},
+    // Timedata:{screen:timedata},
     Dashboard:{screen:Dashboard},
     // CustomerApprove:{screen:CustomerApprove},
     // TableView:{screen:TableView}
