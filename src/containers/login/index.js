@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { Component,useState, createRef } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -30,79 +30,73 @@ import * as SQLite from "expo-sqlite";
 // //   appId: "1:511019454156:android:46aa8619785a889631fc69",
 // //   measurementId: "G-8GSGZQ44ST",
 // // });
-const db = SQLite.openDatabase("db.db");
+// const db = SQLite.openDatabase("db.db");
 
-const login = ({ navigation }) => {
-  const [email, setText] = React.useState(null);
-  const [password, setPass] = React.useState(null);
-
-  //   CHECK(typeof('password') = 'text' AND length('password') >= 6 )
-  // React.useEffect(() => {
-  //   db.transaction((tx) => {
-  //     tx.executeSql(
-  //       "create table if not exists UR (id integer primary key not null, email text , password text ,mobile integer ,fname text ,lname text  );"
-  //     );
-  //   });
-  // }, []);
-
-  const add = (email, password) => {
-    // is text empty?
-    if (
-      email === null ||
-      email === "" ||
-      password === null ||
-      password === ""
-    ) {
-      // db.transaction((tx) => {
-      //   tx.executeSql("drop table UR ;");
-      // });
-      console.log("FALSE");
+export default class index extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      userEmail:'',
+      userPassword:''
     }
-    db.transaction((tx, res) => {
-      tx.executeSql(
-        "select * from UR where email = `email` and password = `password` ",
-        [email, password]
-      );
-      if (length(res) > 0) {
-        console.log("SUCCESSFUL LOGIN");
-        // navigation.navigate("Dashboard");
-      } else {
-        Alert.alert("Credentials Are Wrong");
+  }
+  login = () =>{
+    const {userEmail,userPassword} = this.state;
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+    if(userEmail==""){
+      //alert("Please enter Email address");
+      this.setState({email:'Please enter Email address'})
+      
+    }
+    
+    else if(reg.test(userEmail) === false)
+    {
+    alert("Email is Not Correct");
+    // this.setState({email:'Email is Not Correct'})
+    return false;
       }
-    }, null);
+  
+    else if(userPassword==""){
+      alert("Password is Not Correct");
+  
+    }
+    else{
+      var formdata = new FormData();
+      formdata.append("email", userEmail);
+      formdata.append("password", userPassword);
+      fetch('http://18.224.158.253/plac/public/api/signin?=&=',{
+        method:'post',
+        header:{
+          'Accept': 'application/json',
+          'Content-type': 'application/json'
+        },
+        body:formdata
+        
+      })
+      .then((response) => response.json())
+      .then((responseJson)=>{
+        if(responseJson.status===true){
+          // redirect to profile page
+          console.log(responseJson)
+          alert("Successfully Login");
+          this.props.navigation.navigate("AppStack");
+        }else{
+           console.log(userEmail,userPassword)
+          console.log(responseJson)
+
+           alert("Wrong Login Details");
+         }
+       })
+       .catch((error)=>{
+       console.error(error);
+       });
+      } 
+    Keyboard.dismiss();
   };
-
-  // export default function onRegister() {
-
-  // db.transaction((tx) => {
-  //   tx.executeSql("insert into UR (email, password) values (?, ?)", [text]);
-  //   tx.executeSql("select * from UR", [], (_, { rows }) =>
-  //     console.log(JSON.stringify(rows))
-  //   );
-  // }, null);
-
-  // const { fname, lname, mobile, email, password, nameError } = this.state;
-  // // if (this.state.text === " ") {
-  // //   this.setState(() => ({ nameError: "Required" }));
-  // // }
-  // if (
-  //   (this.state.password != "") &
-  //   (this.state.email != "") &
-  //   (this.state.mobile != "") &
-  //   (this.state.fname != "") &
-  //   (this.state.lname != "")
-  // ) {
-  //   this.setState(() => ({ nameError: "" }));
-  //   firebase
-  //     .auth()
-  //     .createUserWithEmailAndPassword(
-  //       this.state.email.trim(),
-  //       this.state.password
-  //     )
-  //     .then((userId) => {
-
-  return (
-    <View style={styles.mainBody}>
+  
+  render() {
+    return (
+      <View style={styles.mainBody}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
@@ -129,16 +123,18 @@ const login = ({ navigation }) => {
             <ScrollView>
               <View style={styles.SectionStyle}>
                 <TextInput
+                  onChangeText={userEmail => this.setState({userEmail})}
                   style={styles.inputStyle}
-                  placeholder="Enter Email" //dummy@abc.com
+                  placeholder="Enter Email" //12345
                   placeholderTextColor="#8b9cb5"
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                  returnKeyType="next"
-                  value={email}
-                  onChangeText={(email) => setText({ email })}
+                  keyboardType="default"
+                  // value={this.state.userPassword}
+                  // onSubmitEditing={Keyboard.dismiss}
+                  // blurOnSubmit={false}
+                  // secureTextEntry={true}
                   underlineColorAndroid="#f000"
-                  blurOnSubmit={false}
+                  returnKeyType="next"
+     
                 />
               </View>
             </ScrollView>
@@ -148,8 +144,8 @@ const login = ({ navigation }) => {
                 placeholder="Enter Password" //12345
                 placeholderTextColor="#8b9cb5"
                 keyboardType="default"
-                value={password}
-                onChangeText={(password) => setPass({ password })}
+                // value={this.state.userPassword}
+                onChangeText={userPassword => this.setState({userPassword})}
                 onSubmitEditing={Keyboard.dismiss}
                 blurOnSubmit={false}
                 secureTextEntry={true}
@@ -164,7 +160,7 @@ const login = ({ navigation }) => {
                 // add(email, password);
                 // setText(null);
                 // setPass(null);
-                navigation.navigate("AppStack");
+                this.login()
               }}
             >
               <Text style={styles.buttonTextStyle}>LOGIN</Text>
@@ -186,9 +182,15 @@ const login = ({ navigation }) => {
         </View>
       </ScrollView>
     </View>
-  );
-};
-export default login;
+  
+    )
+  }
+}
+
+
+
+
+// export default ('login', () => login);
 
 const styles = StyleSheet.create({
   mainBody: {

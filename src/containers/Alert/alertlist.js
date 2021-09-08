@@ -1,12 +1,10 @@
 import React, { Component,useState } from 'react'
 import { Text, View, Image, TouchableOpacity,Dimensions } from 'react-native'
-// import Video from "react-native-video";
 import {Video} from "expo-av"
 import Constants from 'expo-constants';
 console.log(Constants.manifest)
 const Alertlist = ({ value }) => {
     const [show, setShow] = useState(false);
-    console.log("ALERTLIST",value.video_file)
     return (
         <View style={{paddingVertical: 20}}>
             <View >
@@ -25,7 +23,6 @@ const Alertlist = ({ value }) => {
                     <TouchableOpacity   onPress={() => setShow(!show)} style={{ backgroundColor: '#d4d9df', paddingHorizontal: 30,padding:10, borderRadius: 20 }}>
                         <Text>Movement of: {value.movement_type}</Text>
                         <Text>Description: {value.remarks}</Text>
-                        {/* <Text style={{ zIndex: 99 }}>{element.video}</Text> */}
                     </TouchableOpacity> 
                 </View>
             </View>
@@ -43,9 +40,6 @@ const Alertlist = ({ value }) => {
                 marginTop:10
                 // flexWrap: 'wrap'
             }}>
-                {/* {this.state.array.video.map((values, index) => {
-              console.log("values of video",values,index)
-              return( */}
                 <View  >
 
                     <Video

@@ -93,15 +93,15 @@ export default class alert extends Component {
       .then(response => response.json())
       .then(result => {
         let val = result
-        console.log("RESULT OF ALERTS",result)
+        // console.log("RESULT OF ALERTS",result)
         this.setState({...this.state.array,array : result.data.reverse()})
-        console.log('VAfsdfsdfsdfsdfsdL',this.state.array)
+        // console.log('VAfsdfsdfsdfsdfsdL',this.state.array)
         let i = 0, j = 0, arr = [];
         let temp_element='';
         let array='';
         j = val.data.length;
         array = {...this.state.array};
-        console.log("AJA BHAI---------",array)
+        // console.log("AJA BHAI---------",array)
         while (val.data.length) {
           arr[i] = this.state.array.pop().video_file
           // this.state.video=this.state.video[i].push(val.data.pop().video_file)
@@ -149,7 +149,6 @@ export default class alert extends Component {
 
   render() {
     const { show, videos } = this.state;
-    console.log("VIDEOS", videos)
     return (
       <ScrollView
       
