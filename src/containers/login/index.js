@@ -9,6 +9,7 @@ import {
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Linking,
   ActivityIndicator,
   Alert,
 } from "react-native";
@@ -172,12 +173,10 @@ export default class index extends Component {
             <Text style={styles.plain}>Don't have an account ?</Text>
             <Text
               style={styles.registerTextStyle}
-              onPress={() => {
-                navigation.navigate("Register");
-              }}
+              onPress={()=>{Linking.openURL('tel:03353785571');} }
             >
-              Signup
-            </Text>
+              Contact Us
+              </Text>
           </KeyboardAvoidingView>
         </View>
       </ScrollView>

@@ -311,25 +311,25 @@ export default class Datetime extends Component {
 
   }
 
-   componentDidMount() {
-    let created_date = dateFormat(this.props.from, "yyyy-mm-dd HH:MM:ss");
-    let created_r_1 = dateFormat(this.props.from1, "yyyy-mm-dd HH:MM:ss");
-    let created_r_2 = dateFormat(this.props.from2, "yyyy-mm-dd HH:MM:ss");
+   componentDidMount(props) {
+    let created_date = dateFormat(this.props.from, "yyyy-mm-dd");
+    let created_r_1 = dateFormat(this.props.from1, "HH:MM:ss");
+    let created_r_2 = dateFormat(this.props.from2, "HH:MM:ss");
+    
       newdate=  created_date.slice(0,10);
     newrange_1=  created_r_1.slice(10,23);
-    newrange_2=  created_r_2.slice(10,23);
-    console.log('TIME FROM OTHER another SIDE',newdate)
-    console.log('TIME FROM OTHER another SIDE',newrange_1)
-    console.log('TIME FROM OTHER another SIDE',newrange_2)
+    newrange_2=  created_r_2.slice(10,23);  
+    console.log('TIME FROM OTHER another SIDE', created_date)
+    console.log('TIME FROM OTHER another SIDE',created_r_1)
+    console.log('TIME FROM OTHER another SIDE',created_r_2)
     // this.setState({date:newdate});
     // this.setState({range1:newrange_1});
     // this.setState({range2:newrange_2});
-   this.getVideos(created_date.slice(0,10),created_r_1.slice(10,23),created_r_2.slice(10,23));
+   this.getVideos(created_date,created_r_1,created_r_2);
 
 
 
 
-    console.log('TIME FROM OTHER SIDE',from[1])
 
   }
 
@@ -410,10 +410,11 @@ export default class Datetime extends Component {
       screenStatus: "Getting videos from Api for " + time
     });
     // 2021-09-07 02:00:00-11:40:00
+   let dash='-';
     let params = {
       user_id: 1,
       camera_id: 1,
-      last_sync: a+" "+b+'-'+c
+      last_sync: a+" "+b+dash+c
     };
     console.log("LAST ",params)
     let s = new Service();
@@ -481,7 +482,7 @@ export default class Datetime extends Component {
           {screenStatus.includes("empty") && (
             <TouchableOpacity
               style={styles.retyrBtn}
-              onPress={this.getVideos.bind(this)}
+              onPress={this.getVideos.bind()}
             >
               <Text style={styles.buttonText}>Retry</Text>
             </TouchableOpacity>

@@ -267,12 +267,13 @@ import React, {useState,useStateWithCallback} from 'react';
 import {View, Text,TouchableOpacity, Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Datetime from "./timedata";
+import moment from "moment"
 let from=[];
-let to='';
+let Datenow=new Date();
 export default function index({ navigation }) {
 
   const [state, setState] = useState({
-    date: new Date(),
+    date:Datenow,
     mode: 'date',
     show: false
   });
@@ -281,12 +282,12 @@ export default function index({ navigation }) {
   const [from2,setfrom2]=useState(null);
   
   const [newstate, time_1] = useState({
-    date: new Date(),
+    date: Datenow,
     mode: 'time',
     show: false
   });
   const [newnewstate, newnewState] = useState({
-    date: new Date(),
+    date: Datenow,
     mode: 'time',
     show: false
   });
@@ -294,14 +295,14 @@ export default function index({ navigation }) {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || state.date ;
     setState({...state, date: currentDate, show: false});
-
+    console.log('')
     // from[0]=currentDate;
-    setfrom(currentDate)
     // console.log("TO",currentDate)
     // module.exports = from;
- 
+    
     setState({...state, date: currentDate});
     setState({...state, show: false});
+    setfrom(selectedDate)
 
   };
   const ontimeChange = (event, selectedDate) => {
@@ -310,12 +311,12 @@ export default function index({ navigation }) {
     console.log("FROM",currentDate)
     // let from =[];
     //  from[1]=currentDate;
-    setfrom1(currentDate)
     // console.log("TO",currentDate)
     // module.exports = from;
- 
+    
     time_1({...newstate, date: currentDate});
     time_1({...newstate, show: false});
+    setfrom1(selectedDate)
     // let fromnew={...newstate.date};
     // module.exports = fromnew;
  
@@ -326,13 +327,13 @@ export default function index({ navigation }) {
     
     console.log("TO",currentDate)
     // from[2]=currentDate
-    setfrom2(currentDate)
     // let to=currentDate;
     // module.exports = to;
     // module.exports = from;
-
+    
     newnewState({...newnewstate, date: currentDate});
     newnewState({...newnewstate, show: false});
+    setfrom2(selectedDate)
     // let tonew={...newnewstate.date};
     // module.exports = tonew;
 
@@ -394,7 +395,7 @@ export default function index({ navigation }) {
        { state.show && 
   (<DateTimePicker
     testID="dateTimePicker"
-    timeZoneOffsetInMinutes={0}
+    // timeZoneOffsetInMinutes={0}
     value={state.date}
     mode={state.mode}
     is24Hour={true}
@@ -405,10 +406,10 @@ export default function index({ navigation }) {
 { newstate.show && 
   (<DateTimePicker
     testID="dateTimePicker"
-    timeZoneOffsetInMinutes={0}
     value={newstate.date}
     mode={newstate.mode}
     is24Hour={true}
+    // timeZoneOffsetInMinutes={30000}
     display="default"
     onChange={ontimeChange}
     />)
@@ -416,10 +417,11 @@ export default function index({ navigation }) {
 { newnewstate.show && 
   (<DateTimePicker
     testID="dateTimePicker"
-    timeZoneOffsetInMinutes={0}
+    // timeZoneOffsetInMinutes={0}
     value={newnewstate.date}
     mode={newnewstate.mode}
     is24Hour={true}
+    // timeZoneOffsetInMinutes={30000}
     display="default"
     onChange={ontimeChangeAgain}
     />)
