@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "483127479005",
+    "project_id": "sgcli-fa95e",
+    "storage_bucket": "sgcli-fa95e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483127479005:android:b268e1fd676da51cb96934",
+        "android_client_info": {
+          "package_name": "com.securegaddicli"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "483127479005-9n61ievjvh190f8jo4d3vtthlfdgloen.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9107bPbXborFCu4X77bpK0rQ3Pjf7i2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "483127479005-9n61ievjvh190f8jo4d3vtthlfdgloen.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
